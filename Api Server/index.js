@@ -1,13 +1,26 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import pkg from "@prisma/client";
+import fs from "fs";
+import http from "http";
+import https from "https";
 
+// Server configuration
+var port = 8000;
+var options = {
+    key: fs.readFileSync('./ssl/cert.key'),
+    cert: fs.readFileSync('./ssl/cert.pem'),
+};
 const app = express();
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("dev"));
+
+// DB interaction with prisma
+const { PrismaClient } = pkg;
+const prisma = new PrismaClient();
 
 // ping- pong
 app.get("/ping", async (req, res) => {
@@ -15,23 +28,23 @@ app.get("/ping", async (req, res) => {
 });
 
 //create a user
-app.post("/invert", async (req, res) => {
-  const { word } = req.body;
-  if ( word === null) {
+app.post("/find", async (req, res) => {
+  const { number } = req.body;
+  if ( number === null) {
     return res.status(400).json("Null input");
   }
 
-  var inverted = ""
+  const result = await prisma.test.findUnique({
+    where: {
+      test_column: number,
+    },
+  });
 
-  for (var i = word.length - 1; i >= 0; i--) { 
-    inverted += word[i];
-  }
-
-    res.status(200).json(inverted);
+    res.status(200).json(result);
   }
 );
 
 
-app.listen(process.env.PORT || 8000, () => {
-  console.log("Server running on http://localhost:8000 🎉 🚀");
+https.createServer(options, app).listen(process.env.PORT || 8000, () => {
+  console.log("Server running on https://localhost:8000 🎉 🚀");
 });
