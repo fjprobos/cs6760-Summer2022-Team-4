@@ -20,7 +20,7 @@ def send_sensor_data():
         temperature = sensor.get_temperature()
         current_temp_celsius = str.format("%.2f" % temperature)
 
-        data = {"time": current_time, "temperature": current_temp_celsius}
+        data = {"time": current_time, "temperature": current_temp_celsius, "humidity": None}
 
         url = "https://ec2-54-152-195-135.compute-1.amazonaws.com:8800/add_sensor_record"
         requests.post(url, json=data)
