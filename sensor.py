@@ -17,10 +17,11 @@ def send_sensor_data():
     while True:
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
-        current_temperature_celsius = sensor.get_temperature()
+        temperature = sensor.get_temperature()
+        current_temp_celsius = str.format("%.2f" % temperature)
 
-        data = {current_time: str.format("%.2f" % current_temperature_celsius)}
+        data = {"time": current_time, "temperature": current_temp_celsius}
 
-        url = "serverURLGoesHere"
-        requests.post(url, json=data, auth=HTTPBasicAuth('usernameGoesHere', 'passwordGoesHere'))
+        url = "https://ec2-54-152-195-135.compute-1.amazonaws.com:8800/add_sensor_record"
+        requests.post(url, json=data)
         time.sleep(5)
