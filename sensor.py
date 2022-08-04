@@ -17,10 +17,11 @@ while True:
     try:
         t = time.localtime()
         temp = dhtDevice.temperature
-        humidity = dhtDevice.humidity
+        h = dhtDevice.humidity
 
         current_time = time.strftime("%H:%M:%S", t)
         temperature_c = str.format("%.2f" % temp)
+        humidity = str.format("%.2f" % h)
 
         data = {"time": current_time, "temperature": temperature_c, "humidity": humidity}
 
