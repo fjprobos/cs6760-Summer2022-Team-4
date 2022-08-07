@@ -7,10 +7,6 @@ import http from "http";
 import https from "https";
 
 // Server configuration
-var options = {
-    key: fs.readFileSync('./ssl/cert.key'),
-    cert: fs.readFileSync('./ssl/cert.pem'),
-};
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -50,6 +46,6 @@ app.post("/add_sensor_record", async (req, res) => {
 );
 
 
-https.createServer(options, app).listen(process.env.PORT || 8800, () => {
-  console.log("Server running on https://localhost:8800 🎉 🚀");
+http.createServer(app).listen(process.env.PORT_UNSECURED || 8801, () => {
+  console.log("Server running on http://localhost:8801 🎉 🚀");
 });
