@@ -6,6 +6,7 @@ import requests
 
 dhtDevice = adafruit_dht.DHT22(board.D4)
 assert dhtDevice is not None
+assert board.D4 is not None
 
 while True:
     try:
