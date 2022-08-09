@@ -57,12 +57,8 @@ As part of the unit testing, we can check whether there are data objects created
 If there is no object created, then, an Exception is generated in the python script.
 
 For unit testing in the server, several tests were created.
-~~~ JavaScript
-test("It adds two numbers", () => {
-    expect(1 + 1).toBe(2);
-  });
-~~~
 
+The first test was to determine if the server is "listening" and therefore, able to accept any data transfer from the client (raspberry pi).
 ~~~ JavaScript
 const request = require('supertest')
 const imports = require('../app')
@@ -77,6 +73,7 @@ describe("GET / ", () => {
   });
 ~~~
 
+The second test is created to determine if data can be inserted into the database in the server that is not coming from the client. In the test, a specific data set is created and a corresponding message is returned depending on whether the insertion was successful. 
 ~~~ JavaScript
 const request = require('supertest')
 const imports = require('../app')
@@ -106,15 +103,36 @@ describe("POST / ", () => {
     });
   });
 ~~~
+
+Both tests were successful when ran using the Jest JavaScript Testing Framework.
+
 ![JavaScript test result](images/secure_raspberry_api_server_tests.png)
 
 ___
 ###Test for Security and Vulnerability
 
+For the Security and Vulnerability Testing, WireShark was utilized to execute a 'packet sniffing' test. 
 
+![WireShark Packet Sniffing](images/WIRESHARK.JPG)
+
+In the test, the activity from the local computer was accessed and the packet coming from the server, identified by the server's IP address, was isolated. This ability to access the information exchanged from server to the local computer illustrates the vulnerability of the connection. An actor, malicious or not, is able to intercept the information being transferred into the server. 
 ___
 ###System Integration
 
+The client and server interaction are set in the raspberry pi and AWS EC2 environments. Although we are able to check the server's activity in the EC2 environment, we wanted to utilize another software/application to test the connection and access the information located within.
 
+Postman was used to test both the connection established with the server and the ability to post miscellaneous data that did not originate from the raspberry pi.
+
+The test to determine if a connection is established with the server is achieved by 'pinging' the server and receiving a "pong" message if successful - otherwise, Postman will return a "Could not send request" message. In addition, an error message is generated to identify the reason for the unsuccessful request.
+
+![POSTMAN GET REQUEST](images/POSTMAN_GET.JPG)
+
+The test to determine if we are able to insert data into the server, which has a secured connection to the client (raspberry pi), was created as a "Post" command. The Post request mimics the data generated from the client and therefore, if the command is executed properly, the user will be unable to know that an incursion happened and that additional data was inserted into the table.
+
+![POSTMAN POST REQUEST](images/POSTMAN_POST.JPG)
+
+In the example provided, the request was successful and the data was inserted into the database.
 ___
 ###UI/GUI or CLI
+
+The GUI for the project is yet to be completed. 
