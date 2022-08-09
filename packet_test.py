@@ -1,7 +1,7 @@
 from scapy.all import *
 
 # TODO: modify filter
-packets = sniff(filter="tcp", count=3)
+packets = sniff(filter="src host 24.84.201.182 dst host 54.152.195.135", count=3)
 
 for pkt in packets:
     try:

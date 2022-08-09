@@ -26,7 +26,7 @@ while True:
         data = {"time": current_time, "temperature": temperature_c, "humidity": humidity}
 
         url = "https://ec2-54-152-195-135.compute-1.amazonaws.com:8800/add_sensor_record"
-        requests.post(url, json=data)
+        requests.post(url, json=data, verify=False)
         time.sleep(5)
     except RuntimeError as error:
         print(error.args[0])
